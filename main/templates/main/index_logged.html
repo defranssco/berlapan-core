@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Welcome to Website Berlapan</h1>
+    {% if user.is_authenticated %}
+    <h3>Hello {{ username }}</h3>
+    <h3>{{ user.first_name }}</h3>
+    <h3>{{ user.last_name }}</h3>
+    <h3>{{ user.email }}</h3>
+    <h3>{{ user.profile.location }}</h3>
+    <h3>{{ user.profile.birthdate }}</h3>
+    <h3>{{ user.diprofile.nik }}</h3>
+    <h2>You are successfully logged in</h2>
+    {% endif %}
+
+    <button type="submit"><a href="signout/">Sign Out</a></button>
+    
+
+    <script src="" async defer></script>
+</body>
+</html>
+© 2021 GitHub, Inc.
+Terms
+Privacy

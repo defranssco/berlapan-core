@@ -1,10 +1,24 @@
-from django.http import response,HttpResponseRedirect,JsonResponse
+from django.http import HttpResponse,HttpResponseRedirect,JsonResponse
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
+from rest_framework.fields import JSONField
+from rest_framework.utils import json
 from .forms import Form_relawan_vaksin
 from .models import Model_relawan_vaksin
 from django.views.generic import ListView, DetailView,TemplateView,View
+
+import base64
+
+from rest_framework import permissions
+
+from django.core.files.base import ContentFile
+
+from .serializers import relawanVaksinSerializer
+
+from rest_framework import viewsets
+from rest_framework import serializers
  # Create your views here.
  #Views form daftar relawan vaksin
 def index(request) :
@@ -25,7 +39,6 @@ def index(request) :
     response['submitted'] = submitted
     return render(request,'Daftar_relawan_vaksin.html',response)
    
-
 
 # Hanya dapat diakses setelah login
 @method_decorator(login_required, name='dispatch')
@@ -55,3 +68,70 @@ class PostJsonListView(View):
         posts_size = len(Model_relawan_vaksin.objects.all())
         max_size = True if indeks_akhir >= posts_size else False
         return JsonResponse({'data': posts, 'max': max_size}, safe=False)
+
+class serialisasi(viewsets.ModelViewSet):
+    
+    queryset = Model_relawan_vaksin.objects.all()
+    serializer_class = relawanVaksinSerializer
+
+class relawanVaksin(viewsets.ModelViewSet):
+    """
+    API endpoint that allows users to be viewed or edited.
+    """
+    queryset = Model_relawan_vaksin.objects.all()
+    serializer_class = relawanVaksinSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+
+@csrf_exempt
+def add_to_django(request):
+    if (request.method == "POST"):
+        data = json.loads(request.body)
+        Nama = data['Nama']
+        umur = data['umur']
+        nomor_hp =  data['nomor_hp']
+        nomor_ktp = data['nomor_hp']
+        email = data['email']
+
+        # import base64
+        print(data['foto'])
+        format, imgstr = data['foto'].split(';base64,') 
+        ext = format.split('/')[-1] 
+
+        datafoto = ContentFile(base64.b64decode(imgstr), name='temp.' + ext)
+        # datafoto = data
+
+        foto = datafoto
+
+        alamat = data['alamat']
+        
+        Riwayat_nakes = data['Riwayat_nakes']
+    
+        Peran = data['Peran']
+
+        relawanVaksin = Model_relawan_vaksin()
+
+        relawanVaksin.Nama = Nama
+
+        relawanVaksin.umur = umur
+
+        relawanVaksin.nomor_hp = nomor_hp
+
+        relawanVaksin.nomor_ktp = nomor_ktp
+
+        relawanVaksin.email = email
+
+        relawanVaksin.foto = foto
+
+        relawanVaksin.alamat = alamat
+
+        relawanVaksin.Riwayat_nakes = Riwayat_nakes
+
+        relawanVaksin.Peran = Peran
+
+        relawanVaksin.save()
+
+        # relawanVaksins = Model_relawan_vaksin.objects.all()
+
+        # data = serializers.serialize('json', relawanVaksins)
+        # return HttpResponse(data, content_type="application/json")

@@ -58,6 +58,54 @@
   </section>
 
   <section class="body">
+    <div class="body_main">
+
+      <div class="sidebar">
+        {% if user.is_authenticated %}
+        <div class="sidebar_top">
+          <img src="{% static 'img/background_profile.jpg' %}">
+          <div class="image_container">
+            <img src="{% static 'img/satu.PNG' %}" >
+          </div>
+          <h2>{{ username }}</h2>
+          <h4>{{ user.email }}</h4>
+        </div>
+        {% endif %}
+        {% if user.is_authenticated %}
+        <div class="sidebar_starts">
+          <div class="sidebar_stat">
+            <p>Tanggal lahir</p>
+            <p class="sidebar_statNumber">{{ user.profile.birthdate }}</p>
+          </div>
+          <div class="sidebar_stat">
+            <p>Domisili</p>
+            <p class="sidebar_statNumber">{{ user.profile.location }}</p>
+          </div>
+        </div>
+        {% endif %}
+        <div class="sidebar_bottom">
+          <p>Terdaftar</p>
+          <div class="sidebar_recentItem">
+            <span class="sidebar_hash">#</span>
+      
+            <a href="belum">Relawan Vaksin</a>
+          </div>
+          <div class="sidebar_recentItem">
+            <span class="sidebar_hash">#</span>
+
+            <a href = "#">Donor Darah</a>
+          </div>
+          <div class="sidebar_recentItem">
+            <span class="sidebar_hash">#</span>
+            <a href = "#">Vaksin</a>
+          </div>
+          <div class="sidebar_recentItem">
+            <span class="sidebar_hash">#</span>
+            <a href = "#">Test Swap/PCR</a>
+          </div>
+        </div>
+
+      </div>
     <div class="info">
       <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
         <ol class="carousel-indicators">
@@ -305,6 +353,7 @@
       </div>
     </div>
   </section>
+  <button type="submit"><a href="signout/">Sign Out</a></button>
   <script>
     function togglePopup() {
       document.getElementById("popup-1").classList.toggle("active");

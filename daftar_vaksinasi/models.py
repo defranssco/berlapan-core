@@ -39,7 +39,7 @@ class SentraVaksinasi(models.Model):
 
 class PesertaVaksinasi(models.Model):
     nama = models.CharField(max_length=50)
-    tanggal_lahir = DateField()
+    tanggal_lahir = models.DateField()
     nik = models.CharField(max_length=50)
 
     alamat_sentra_vaksinasi = models.ForeignKey(SentraVaksinasi, on_delete=CASCADE, null=True)
